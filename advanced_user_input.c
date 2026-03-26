@@ -20,6 +20,7 @@ int main(void) {
     char buff[10];                  /* Small buffer for fgets user input */
     char letter_guess;              /* Current letter user has guessed */
     char guessed_letters[ALPHABET]; /* Array of letters that user has previously guessed */
+    int num_letters = 0;                /* Number of letters that user has guessed */
 
     /* Prompt for user input */
     printf("Enter a character: ");
@@ -30,17 +31,31 @@ int main(void) {
         if (buff[0] != '\n' && buff[1] == '\n') {
             /* Change guess to all lowercase for future input validity */
             letter_guess = tolower(buff[0]);
-            
+
             /* Check that user entered a char, not anything else */
             if (isalpha(letter_guess)) {
+                /* Check that user has not guessed letter before */
+                int i;
+                for(i = 0; i < num_letters; i++) {
+                    /* User has guessed repeated letter */
+                    if(letter_guess == guessed_letters[i]) {
+                        printf("You've already guessed that letter!");
+                        return -1;
+                    } 
+                }
+                /* User has guessed a new letter */
                 printf("You guessed the letter: %c\n", letter_guess);
+                guessed_letters[i] = letter_guess;
+                num_letters++;
             } else {
                 /* Error message to print when user enters something other than a char */
                 printf("Not a valid guess! Please enter a character.\n");
+                return -1;
             }
         } else {
             /* Error message to print when user enters more than 1 char */
             printf("Not a valid guess! Please enter exactly 1 character.\n");
+            return -1;
         }
     }
 
