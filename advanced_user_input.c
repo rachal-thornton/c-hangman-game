@@ -20,7 +20,7 @@ int main(void) {
     char buff[10];                  /* Small buffer for fgets user input */
     char letter_guess;              /* Current letter user has guessed */
     char guessed_letters[ALPHABET]; /* Array of letters that user has previously guessed */
-    int num_letters = 0;                /* Number of letters that user has guessed */
+    int num_letters = 0;            /* Number of letters that user has guessed */
 
     /* Prompt for user input */
     printf("Enter a character: ");
