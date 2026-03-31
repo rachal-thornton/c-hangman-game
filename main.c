@@ -38,12 +38,14 @@ int main (void) {
         } else if (tolower(is_playing) == 'y') {
             /* Set word; Display UI */
             int lives = 0;
+            int num_letters = 0;
             char curr_letter;
+            char guessed_letters[ALPHABET];
 
             /* Loop to guess letters while user still has lives left */
             while(lives < MAX_LIVES) {
                 /* Valid guess */
-                if(getLetter(&curr_letter) == 0) {
+                if(getLetter(&curr_letter, &num_letters, &guessed_letters) == 0) {
                     printf("You guessed letter: %c\n", curr_letter);
 
                     /* Invalid guess */
@@ -69,15 +71,27 @@ int main (void) {
 *  Pre: input is passed into function from main
 *  Post: validates that input is a single letter and has not been guessed, then stores guess in char array 
 *        returns 0 if valid, 1 if not */
-int getLetter(char *curr_letter) {
+int getLetter(char *curr_letter, int *num_letters, char *guessed_letters[ALPHABET]) {
+    /* Variables */
     char buff[10];
 
-    printf("Guess a letter: ");
-
+    /* Check that user actually entered something, and only 1 letter */
     if(fgets(buff, sizeof(buff), stdin) != NULL) {
         if(buff[0] != '\n' && buff[1] == '\n') {
+            /* Convert to lowercase */
             *curr_letter = tolower(buff[0]);
+
+            /* Check that user entered a char, not anything else */
+            if(isalpha(*curr_letter)) {
+                /* Check that user has not guessed the letter before */
+                int i;
+                for(i = 0; i < *num_letters; i++) {
+                    if(*curr_letter == guessed_letters[i]) {
+                        printf("You've already guessed that letter! Try again.\n");
+                        return -1;
+                    }
+                }
+            }
         }
     }
-
 }
